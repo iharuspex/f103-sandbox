@@ -27,9 +27,13 @@ link_directories(${LIBOPENCM3_DIR}/lib)
 
 file(GLOB_RECURSE USER_SOURCES core/*.c)
 
+# OS
+include_directories(quark_ts/include)
+file(GLOB QUARK_TS_SOURCES quark_ts/*.c)
+
 include_directories(
         ${LIBOPENCM3_DIR}/include
-        inc)
+        core/inc)
 
 set(LINKER_SCRIPT "${CMAKE_SOURCE_DIR}/cfg/libopencm3.ld")
 
@@ -43,7 +47,7 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -T ${LINKER_SCRIPT} -nosta
 set(HEX_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.hex)
 set(BIN_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.bin)
 
-add_executable(${PROJECT_NAME}.elf ${USER_SOURCES})
+add_executable(${PROJECT_NAME}.elf ${USER_SOURCES} ${QUARK_TS_SOURCES})
 target_link_libraries(${PROJECT_NAME}.elf opencm3_stm32f1)
 
 add_custom_command(TARGET ${PROJECT_NAME}.elf PRE_BUILD
